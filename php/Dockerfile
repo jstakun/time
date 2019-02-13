@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhscl/php-70-rhel7
+FROM registry.access.redhat.com/rhscl/httpd-24-rhel7
 MAINTAINER Veer Muchandi veer@redhat.com
 COPY src/ /var/www/html/
 EXPOSE 8080
