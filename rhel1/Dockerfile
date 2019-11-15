@@ -1,4 +1,4 @@
-FROM registry.redhat.io/ubi7/ubi
+FROM registry.access.redhat.com/ubi7/ubi
 MAINTAINER Jaroslaw Stakun jarek@redhat.com
 ADD ./init.sh ./
 RUN yum install nmap-ncat --disablerepo=* --enablerepo=rhel-7-server-rpms -y && yum clean all -y 
