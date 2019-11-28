@@ -2,6 +2,8 @@ FROM registry.access.redhat.com/codeready-workspaces/stacks-java-rhel8:1.2
 
 USER root
 
+RUN yum install gcc zlib-devel -y && yum clean all -y
+
 #RUN wget -O /usr/local/bin/odo https://github.com/redhat-developer/odo/releases/download/v0.0.20/odo-linux-amd64 && chmod a+x /usr/local/bin/odo
 
 RUN wget -O /tmp/oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz && cd /usr/bin && tar -xvzf /tmp/oc.tar.gz && chmod a+x /usr/bin/oc && rm -f /tmp/oc.tar.gz
