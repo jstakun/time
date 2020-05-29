@@ -14,7 +14,8 @@ RUN adduser -g 0 -c "James user" -p james james && \
 
 COPY ./status.sh $JAMES_HOME
 
-RUN chown james:root $JAMES_HOME && chmod +x $JAMES_HOME/status.sh
+RUN chown james:root $JAMES_HOME && \
+    chmod +x $JAMES_HOME/status.sh
 
 USER james
 
