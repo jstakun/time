@@ -1,0 +1,24 @@
+#FROM registry.access.redhat.com/rhscl/postgresql-96-rhel7
+#FROM registry.redhat.io/rhel8/postgresql-96
+FROM mdillon/postgis:9.6
+
+ENV BACKUP_HOME=/opt/backup
+
+WORKDIR $BACKUP_HOME
+
+USER root
+
+RUN apt update -y && \
+    apt install -y awscli mcrypt && \
+    mkdir -p $BACKUP_HOME && \ 
+    deluser backup && \
+#   adduser -g 0 -c "Backup user" -p backup backup 
+    useradd -ms /bin/bash backup
+
+COPY ./do_backup.sh $BACKUP_HOME
+
+RUN chown -R backup:root $BACKUP_HOME && \
+    chmod +x $BACKUP_HOME/do_backup.sh && \
+    chmod g+rw $BACKUP_HOME
+
+USER backup
