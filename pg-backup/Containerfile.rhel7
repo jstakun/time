@@ -1,5 +1,7 @@
 FROM registry.access.redhat.com/rhscl/postgresql-96-rhel7
 
+MAINTAINER Jaroslaw Stakun <jstakun@redhat.com>
+
 ENV BACKUP_HOME=/opt/backup
 
 WORKDIR $BACKUP_HOME
