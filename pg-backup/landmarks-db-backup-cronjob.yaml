@@ -1,0 +1,42 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: landmarks-db-backup
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          activeDeadlineSeconds: 1800
+          restartPolicy: OnFailure
+          containers:
+          - name: backup-maker
+            image: quay.io/jstakun/pg-backup:0.3
+            command:
+            - /bin/bash
+            - /opt/backup/do_backup.sh
+            envFrom:
+            - configMapRef:
+                name: pg-backup-conf
+            env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: landmarksdb
+                  key: database-password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: landmarksdb
+                  key: database-user
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: AWS_SECRET_ACCESS_KEY
