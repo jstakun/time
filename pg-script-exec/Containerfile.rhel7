@@ -1,0 +1,20 @@
+FROM registry.access.redhat.com/openshift3/ose-cli
+
+MAINTAINER Jaroslaw Stakun <jstakun@redhat.com>
+
+ENV PG_HOME=/opt/pg-scripts
+
+WORKDIR $PG_HOME
+
+USER root
+
+RUN mkdir -p $PG_HOME && \ 
+    adduser -g 0 -c "pg user" -p pg pg 
+
+COPY ./*.sh $PG_HOME
+
+RUN chown -R pg:root $PG_HOME && \
+    chmod +x $PG_HOME/*.sh && \
+    chmod g+rw $PG_HOME
+
+USER pg
