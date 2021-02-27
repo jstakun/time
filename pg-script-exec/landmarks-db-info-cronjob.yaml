@@ -1,0 +1,23 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: landmarks-db-info
+spec:
+  schedule: "0 9 * * *"
+  jobTemplate:
+    spec:
+      parallelism: 1
+      completions: 1
+      template:
+        metadata:
+          name: landmarks-db-info
+        spec:
+          activeDeadlineSeconds: 1800
+          restartPolicy: OnFailure
+          containers:
+            - name: pg-exec
+              image: quay.io/jstakun/pg-exec:v0.1
+              args:
+              - /bin/bash
+              - /opt/pg-scripts/pg_exec.sh
+              env: {}
