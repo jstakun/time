@@ -1,0 +1,3 @@
+ARG BASE
+FROM ${BASE}
+ENTRYPOINT ["sleep 1h"]
