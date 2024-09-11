@@ -7,8 +7,10 @@ echo '--- running pg_dump ---'
 pg_dump -v -d $POSTGRES_DB -U $POSTGRES_USER -h $POSTGRES_HOST --encoding=UTF-8 > $DUMP_FILE
 echo '--- running bzip2 ---'
 bzip2 $DUMP_FILE
-echo '--- running mcrypt ---'
-mcrypt ${DUMP_FILE}.bz2 -k $DB_BACKUP_PASSWORD
+#echo '--- running mcrypt ---'
+#mcrypt ${DUMP_FILE}.bz2 -k $DB_BACKUP_PASSWORD
+echo '--- running openssl ---'
+openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -in ${DUMP_FILE}.bz2 -out ${DUMP_FILE}.bz2.nc -k $DB_BACKUP_PASSWORD
 echo 'Passphrase:' $DB_BACKUP_PASSWORD
 echo '--- running aws s3 ---'
 aws s3 cp ${DUMP_FILE}.bz2.nc $S3_BACKUP_PATH/$DUMP_FILE.bz2.nc
