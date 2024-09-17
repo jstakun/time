@@ -10,7 +10,7 @@ bzip2 $DUMP_FILE
 #echo '--- running mcrypt ---'
 #mcrypt ${DUMP_FILE}.bz2 -k $DB_BACKUP_PASSWORD
 echo '--- running openssl ---'
-openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 250000 -salt -in ${DUMP_FILE}.bz2 -out ${DUMP_FILE}.bz2.nc -k $DB_BACKUP_PASSWORD
+openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 210000 -salt -in ${DUMP_FILE}.bz2 -out ${DUMP_FILE}.bz2.nc -k $DB_BACKUP_PASSWORD
 echo 'Passphrase:' $DB_BACKUP_PASSWORD
 echo '--- running aws s3 ---'
 aws s3 cp ${DUMP_FILE}.bz2.nc $S3_BACKUP_PATH/$DUMP_FILE.bz2.nc
