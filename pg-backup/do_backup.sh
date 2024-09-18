@@ -16,7 +16,7 @@ echo 'Passphrase:' $DB_BACKUP_PASSWORD
 echo '--- running aws s3 ---'
 aws s3 cp ${DUMP_FILE}.bz2.nc $S3_BACKUP_PATH/$DUMP_FILE.bz2.nc
 export FILESIZE=$(du -m ${DUMP_FILE}.bz2.nc | cut -f1)
-echo 'File size:' $FILESIZE
+echo 'File size:' $FILESIZE ' MB'
 if [ -z "$ADMIN_EMAIL" ]
 then
    echo "--- SES notification not sent ---"
@@ -25,6 +25,6 @@ else
    aws ses send-email \
      --from "$ADMIN_EMAIL" \
      --destination "ToAddresses=$ADMIN_EMAIL" \
-     --message "Subject={Data=Daily backup confirmation,Charset=utf8},Body={Text={Data=$DUMP_FILE.bz2.nc passphrase is $DB_BACKUP_PASSWORD\nFile size: $FILESIZE MB\nhttps://s3.console.aws.amazon.com/s3/buckets/,Charset=utf8},Html={Data=$DUMP_FILE.bz2.nc passphrase is $DB_BACKUP_PASSWORD<br/>File size: $FILESIZE MB<br/>https://s3.console.aws.amazon.com/s3/buckets/,Charset=utf8}}" \
+     --message "Subject={Data=Daily backup confirmation,Charset=utf8},Body={Text={Data=$DUMP_FILE.bz2.nc passphrase is $DB_BACKUP_PASSWORD\nBackup file size is $FILESIZE MB\nhttps://s3.console.aws.amazon.com/s3/buckets/,Charset=utf8},Html={Data=$DUMP_FILE.bz2.nc passphrase is $DB_BACKUP_PASSWORD<br/>Backup file size is $FILESIZE MB<br/>https://s3.console.aws.amazon.com/s3/buckets/,Charset=utf8}}" \
      --region "$AWS_DEFAULT_REGION"   
 fi
